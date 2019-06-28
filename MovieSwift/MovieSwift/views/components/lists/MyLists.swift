@@ -61,16 +61,19 @@ struct MyLists : View {
     var body: some View {
         NavigationView {
             List {
+                NavigationButton(destination: WishlistView()) {
+                    IconRow(systemImage: "heart.fill",
+                            text: "Wishlist",
+                            color: .red,
+                            count: store.state.moviesState.wishlist.count)
+                }
+                NavigationButton(destination: SeenlistView()) {
+                    IconRow(systemImage: "eye.fill",
+                            text: "Seenlist",
+                            color: .green,
+                            count: store.state.moviesState.seenlist.count)
+                }
                 customListsSection
-                SegmentedControl(selection: $selectedList) {
-                    Text("Wishlist").tag(0)
-                    Text("Seen").tag(1)
-                }
-                if selectedList == 0 {
-                    wishlistSection
-                } else if selectedList == 1 {
-                    seenSection
-                }
             }
             .navigationBarTitle(Text("My Lists"))
         }
