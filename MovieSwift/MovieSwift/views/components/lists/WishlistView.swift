@@ -17,9 +17,15 @@ struct WishlistView : View {
     }
     
     var body: some View {
-        MoviesList(movies: movies, displaySearch: false, onDelete: { (movie) in
-            self.store.dispatch(action: MoviesActions.RemoveFromWishlist(movie: movie))
-        })
+        List {
+            ForEach(movies) { movie in
+                MovieRow(movieId: movie)
+                }.onDelete { index in
+                    self.store.dispatch(action: MoviesActions.RemoveFromWishlist(movie: self.movies[index.first!]))
+            }
+        }
+            .navigationBarTitle(Text("Wishlist"))
+            .navigationBarItems(trailing: EditButton())
     }
 }
 
