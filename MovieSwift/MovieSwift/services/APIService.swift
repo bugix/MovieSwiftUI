@@ -22,9 +22,12 @@ struct APIService {
     
     enum Endpoint {
         case popular, toRated, upcoming, nowPlaying
-        case detail(movie: Int), recommended(movie: Int), similar(movie: Int)
+        case movieDetail(movie: Int), recommended(movie: Int), similar(movie: Int)
         case credits(movie: Int), review(movie: Int)
-        case searchMovie, searchKeyword
+        case searchMovie, searchKeyword, searchPerson
+        case personDetail(person: Int)
+        case personMovieCredits(person: Int)
+        case personImages(person: Int)
         case genres
         case discover
         
@@ -38,8 +41,10 @@ struct APIService {
                 return "movie/upcoming"
             case .nowPlaying:
                 return "movie/now_playing"
-            case let .detail(movie):
+            case let .movieDetail(movie):
                 return "movie/\(String(movie))"
+            case let .personDetail(person):
+                return "person/\(String(person))"
             case let .credits(movie):
                 return "movie/\(String(movie))/credits"
             case let .review(movie):
@@ -48,10 +53,16 @@ struct APIService {
                 return "movie/\(String(movie))/recommendations"
             case let .similar(movie):
                 return "movie/\(String(movie))/similar"
+            case let .personMovieCredits(person):
+                return "person/\(person)/movie_credits"
+            case let .personImages(person):
+                return "person/\(person)/images"
             case .searchMovie:
                 return "search/movie"
             case .searchKeyword:
                 return "search/keyword"
+            case .searchPerson:
+                return "search/person"
             case .genres:
                 return "genre/movie/list"
             case .discover:
@@ -96,6 +107,9 @@ struct APIService {
                 }
             } catch let error {
                 DispatchQueue.main.async {
+                    #if DEBUG
+                    print("JSON Decoding Error: \(error)")
+                    #endif
                     completionHandler(.failure(.jsonDecodingError(error: error)))
                 }
             }

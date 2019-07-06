@@ -16,33 +16,30 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        #if targetEnvironment(UIKitForMac)
-        let windowScene = UIWindowScene(session: session, connectionOptions: connectionOptions)
-        let window = UIWindow(windowScene: windowScene)
-        #else
-        let window = UIWindow(frame: UIScreen.main.bounds)
-        #endif
-        
-        //TODO: Move that to SwiftUI once implemented
-        UINavigationBar.appearance().largeTitleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor(named: "steam_gold")!,
-            NSAttributedString.Key.font: UIFont(name: "FjallaOne-Regular", size: 40)!]
-        
-        UINavigationBar.appearance().titleTextAttributes = [
-            NSAttributedString.Key.foregroundColor: UIColor(named: "steam_gold")!,
-            NSAttributedString.Key.font: UIFont(name: "FjallaOne-Regular", size: 18)!]
-        
-        UIBarButtonItem.appearance().setTitleTextAttributes([
-            NSAttributedString.Key.foregroundColor: UIColor(named: "steam_gold")!,
-            NSAttributedString.Key.font: UIFont(name: "FjallaOne-Regular", size: 16)!],
-                                                            for: .normal)
-        
-        let controller = UIHostingController(rootView: HomeView().environmentObject(store))
-        window.rootViewController = controller
-        window.tintColor = UIColor(named: "steam_gold")
-        self.window = window
-        window.makeKeyAndVisible()
-    }
+        if let windowScene = scene as? UIWindowScene {
+            let window = UIWindow(windowScene: windowScene)
+            
+            //TODO: Move that to SwiftUI once implemented
+            UINavigationBar.appearance().largeTitleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor(named: "steam_gold")!,
+                NSAttributedString.Key.font: UIFont(name: "FjallaOne-Regular", size: 40)!]
+            
+            UINavigationBar.appearance().titleTextAttributes = [
+                NSAttributedString.Key.foregroundColor: UIColor(named: "steam_gold")!,
+                NSAttributedString.Key.font: UIFont(name: "FjallaOne-Regular", size: 18)!]
+            
+            UIBarButtonItem.appearance().setTitleTextAttributes([
+                NSAttributedString.Key.foregroundColor: UIColor(named: "steam_gold")!,
+                NSAttributedString.Key.font: UIFont(name: "FjallaOne-Regular", size: 16)!],
+                                                                for: .normal)
+            
+            let controller = UIHostingController(rootView: HomeView().environmentObject(store))
+            window.rootViewController = controller
+            window.tintColor = UIColor(named: "steam_gold")
+            self.window = window
+            window.makeKeyAndVisible()
+        }
+        }
     
     func sceneDidEnterBackground(_ scene: UIScene) {
         store.state.archiveState()
@@ -66,7 +63,9 @@ let sampleStore = Store<AppState>(reducer: appStateReducer,
                                       topRated: [0],
                                       upcoming: [0],
                                       customLists: [0: sampleCustomList]),
-                                           castsState: CastsState()),
+                                           peoplesState: PeoplesState(peoples: [0: sampleCasts.first!, 1: sampleCasts[1]],
+                                                                      peoplesMovies: [:],
+                                                                      search: [:])),
                            queue: .main)
 #endif
 

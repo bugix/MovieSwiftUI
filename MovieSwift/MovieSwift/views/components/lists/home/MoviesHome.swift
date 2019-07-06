@@ -20,7 +20,7 @@ struct MoviesHome : View {
             Text("Popular").tag(Categories.popular)
             Text("Top Rated").tag(Categories.topRated)
             Text("Upcoming").tag(Categories.upcoming)
-            Text("Now Playing").tag(Categories.nowPlaying)
+            Text("Playing").tag(Categories.nowPlaying)
             }
     }
     
@@ -38,11 +38,10 @@ struct MoviesHome : View {
                 }
             }
             .navigationBarItems(trailing:
-                PresentationButton(destination: SettingsForm()) {
+                PresentationLink(destination: SettingsForm()) {
                         Image(systemName: "wrench")
                 }
             )
-            .navigationBarHidden(false)
         }
     }
 }
